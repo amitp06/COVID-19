@@ -3,11 +3,18 @@ if(!require(reshape2)){install.packages('reshape2');require(reshape2)}
 
 # The file paths below assume your working directory is 'stats' (where this file is located)
 
-df_Mobility = read.csv("./stats/2020_US_Region_Mobility_Report.csv")
+if(basename(getwd())=="COVID-19"){df_Mobility = read.csv("./stats/2020_US_Region_Mobility_Report.csv")
 
 df_COVID_conf_US = read.csv("./csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv")
 
-df_COVID_death_US = read.csv("./csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv")
+df_COVID_death_US = read.csv("./csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv")}
+
+if(basename(getwd())=="stats"){df_Mobility = read.csv("../stats/2020_US_Region_Mobility_Report.csv")
+
+df_COVID_conf_US = read.csv("../csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv")
+
+df_COVID_death_US = read.csv("../csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv")}
+
 
 # Following stuff is just goofing around
 
