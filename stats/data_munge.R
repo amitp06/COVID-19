@@ -76,12 +76,16 @@ XtrainQualDummy = predict(dummyModel, XtrainFact)
 
 XtrainQuan = select(Xtrain,date,population,mobility_retail_recreation_change,mobility_grocery_pharmacy_change,mobility_parks_change,
                     mobility_transit_stations_change,mobility_workplaces_change,mobility_residential_change)
+
 XtrainFull = cbind(XtrainQualDummy, XtrainQuan)
 
 XtrainQuan2 = select(Xtrain,population,mobility_retail_recreation_change,mobility_grocery_pharmacy_change,mobility_parks_change,
 mobility_transit_stations_change,mobility_workplaces_change,mobility_residential_change)
 
-XtrainFull2 = XtrainFull = cbind(XtrainQualDummy, XtrainQuan2)
+XtrainFull2= cbind(XtrainQualDummy, XtrainQuan2)
+
+XtrainFull3 = cbind(XtrainFact,XtrainQuan)
+
 
 #corrplot
 
