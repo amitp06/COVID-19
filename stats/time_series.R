@@ -14,6 +14,10 @@ if(!require(purrr)){install.packages('purrr');require(purrr)}
 
 # just do a sort on state and fips, may need to eventually drop fips
 
+# let's first just get a model run 
+
+
+
 organized <- df_subset %>%
   group_by(state, fips, date)
 
