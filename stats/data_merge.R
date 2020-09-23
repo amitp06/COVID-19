@@ -1,20 +1,13 @@
 if(!require(tidyverse)){install.packages('tidyverse');require(tidyverse)}
 if(!require(reshape2)){install.packages('reshape2');require(reshape2)}
 
-# The file paths below assume your working directory is 'stats' (where this file is located)
-
 if(basename(getwd())=="COVID-19"){df_Mobility = read.csv("./stats/2020_US_Region_Mobility_Report.csv")
-
 df_COVID_conf_US = read.csv("./csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv")
-
 df_COVID_death_US = read.csv("./csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv")}
 
 if(basename(getwd())=="stats"){df_Mobility = read.csv("../stats/2020_US_Region_Mobility_Report.csv")
-
 df_COVID_conf_US = read.csv("../csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv")
-
 df_COVID_death_US = read.csv("../csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv")}
-
 
 # Following stuff is just goofing around
 
@@ -68,10 +61,10 @@ names(df_COVID_death_US_resh)[names(df_COVID_death_US_resh)=="value"] = "deaths"
 # Second join is between the new time series DF and the mobility DF on FIPS and Date 
 # The second inner join causes a loss of 17.6% (small county and time period diffs)
 
-df_intermediate = inner_join(df_COVID_conf_US_resh,df_COVID_death_US_resh)
+df_intermediate = inner_join(df_COVID_conf_US_resh,df_COVID_death_US_resh,na_matches='never')
 df_intermediate$FIPS = as.character(df_intermediate$FIPS)
 df_Mobility$census_fips_code = as.character(df_Mobility$census_fips_code)
-df_merged = inner_join(df_intermediate,df_Mobility,by=c('date_parsed'='date_parsed',"FIPS"='census_fips_code'))
+df_merged = inner_join(df_intermediate,df_Mobility,by=c('date_parsed'='date_parsed',"FIPS"='census_fips_code'),na_matches='never')
 
 # I'll select and rename columns for all further analysis while leaving the joined table alone
 
