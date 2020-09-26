@@ -42,6 +42,14 @@ df_agg = df_subset %>%
 
 
 
+df_agg$case_diff_7_8 = df_agg$sum_cases_8 - df_agg$sum_cases_7
+
+# Bad dumb model 1
+
+lm1 = lm(case_diff_7_8~population+mean_retail_7+mean_grocery_7+mean_parks_7+mean_transit_7+mean_work_7+mean_res_7,df_agg)
+
+summary(lm1)
+plot(lm1)
 
 
 
