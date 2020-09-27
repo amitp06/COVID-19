@@ -87,4 +87,10 @@ step.model <- train(case_diff_7_8 ~ population+mean_retail_7+mean_grocery_7+mean
 step.model$results
 step.model$bestTune
 summary(step.model$finalModel)
-coef(step.model$finalModel, id=4)
+coef(step.model$finalModel, id=nrow(summary(step.model)$which))
+
+stepwise = as.data.frame(summary(step.model)$which)
+stepwise_names = tail(names(stepwise[,stepwise[nrow(stepwise),]==TRUE]),-1)
+stepwise_formula = as.formula(paste('case_diff_7_8~',paste(stepwise_names,collapse="+"),sep=""))
+stepwise_lm = lm(stepwise_formula,data=df_agg)
+stepwise_lm
