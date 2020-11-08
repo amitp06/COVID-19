@@ -6,6 +6,7 @@ require(PRROC)
 require(lubridate)
 require(leaps)
 
+
 df_agg = df_subset %>%
   mutate(month = month(date)) %>% 
   group_by(nation,state,county,location_combined,fips,month, population) %>% 

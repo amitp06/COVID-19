@@ -55,20 +55,20 @@ pivot_wider(id_cols=c("nation","state","county","location_combined","fips", "pop
 
 #should have named this something else, maybe, but renaming incorrectly just so predict function works easily.
 
-df_agg_OOT$case_diff_7_8 = df_agg_OOT$end_cases_9/df_agg_OOT$end_cases_8 - 1
-df_agg_OOT$case_diff_7_8[is.na(df_agg_OOT$case_diff_7_8)] = df_agg_OOT$end_cases_9[is.na(df_agg_OOT$case_diff_7_8)] - 1
+df_agg_OOT$case_diff_7_8 = df_agg_OOT$end_cases_10/df_agg_OOT$end_cases_9 - 1
+df_agg_OOT$case_diff_7_8[is.na(df_agg_OOT$case_diff_7_8)] = df_agg_OOT$end_cases_10[is.na(df_agg_OOT$case_diff_7_8)] - 1
 
 # Hardcoded county median as response variable cutoff but could be an arbitrary value
 cutoff = 0.3409769
 df_agg_OOT$high_growth_8 = factor(ifelse(df_agg_OOT$case_diff_7_8 > cutoff,'high_growth','low_growth'))
 df_agg_OOT$high_growth_8 = relevel(df_agg_OOT$high_growth_8,ref='low_growth')
 
-df_agg_OOT$retail_diff_7_8 = (df_agg_OOT$median_retail_9 - df_agg_OOT$median_retail_8)
-df_agg_OOT$grocery_diff_7_8 = (df_agg_OOT$median_grocery_9 - df_agg_OOT$median_grocery_8)
-df_agg_OOT$parks_diff_7_8 = (df_agg_OOT$median_parks_9 - df_agg_OOT$median_parks_8)
-df_agg_OOT$transit_diff_7_8 = (df_agg_OOT$median_transit_9 - df_agg_OOT$median_transit_8)
-df_agg_OOT$work_diff_7_8 = (df_agg_OOT$median_work_9 - df_agg_OOT$median_work_8)
-df_agg_OOT$res_diff_7_8 = (df_agg_OOT$median_res_9 - df_agg_OOT$median_res_8)
+df_agg_OOT$retail_diff_7_8 = (df_agg_OOT$median_retail_10 - df_agg_OOT$median_retail_9)
+df_agg_OOT$grocery_diff_7_8 = (df_agg_OOT$median_grocery_10 - df_agg_OOT$median_grocery_9)
+df_agg_OOT$parks_diff_7_8 = (df_agg_OOT$median_parks_10 - df_agg_OOT$median_parks_9)
+df_agg_OOT$transit_diff_7_8 = (df_agg_OOT$median_transit_10 - df_agg_OOT$median_transit_9)
+df_agg_OOT$work_diff_7_8 = (df_agg_OOT$median_work_10 - df_agg_OOT$median_work_9)
+df_agg_OOT$res_diff_7_8 = (df_agg_OOT$median_res_10 - df_agg_OOT$median_res_9)
 # df_agg$ind_retail = as.factor(df_agg$median_retail_8 > median(df_agg$median_retail_8))
 # df_agg$ind_grocery = as.factor(df_agg$median_grocery_8 > median(df_agg$median_grocery_8))
 # df_agg$ind_parks = as.factor(df_agg$median_parks_8 > median(df_agg$median_parks_8))
@@ -79,21 +79,28 @@ df_agg_OOT$res_diff_7_8 = (df_agg_OOT$median_res_9 - df_agg_OOT$median_res_8)
 anyNA(df_agg_OOT)
 
 
+test_preds = predict(experimental,newdata=df_agg_OOT)
+test_preds_probs = predict(experimental,newdata=df_agg_OOT,type='prob')
+newtable = cbind(df_agg_OOT,test_preds)
+
+names(newtable)[87] = 'test_preds'
+
+CM_OOT = caret::confusionMatrix(data=test_preds,reference = df_agg_OOT$high_growth_8,positive='high_growth')
 
 
+# Get confusion matrix stats
 
+precision_OOT = CM_OOT$table[2,2]/sum(CM_OOT$table[2,])
+recall_OOT = CM_OOT$table[2,2]/sum(CM_OOT$table[,2])
+precision_OOT;recall_OOT
 
+# Get ROC stats
 
+roc_curve_OOT = roc(df_agg_OOT$high_growth_8,test_preds_probs$high_growth)
+plot(roc_curve_OOT)
+roc_curve_OOT$auc
 
-
-
-
-
-
-
-
-
-
-
-predict(experimental, newdata=df_agg_OOT)
+# Get calibration stats
+calibration_test = calibration(df_agg_OOT$high_growth_8~test_preds_probs$high_growth,cuts=5,class='high_growth')
+xyplot(calibration_test)
 
