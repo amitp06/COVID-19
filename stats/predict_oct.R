@@ -1,3 +1,5 @@
+logistic_selected <- readRDS("E:/Grad School/Homework/656/COVID-19/stats/logistic_selected.rds")
+
 df_agg_OOT = df_subset_OOT %>%
   mutate(month = month(date)) %>% 
   group_by(nation,state,county,location_combined,fips,month, population) %>% 
@@ -79,8 +81,8 @@ df_agg_OOT$res_diff_7_8 = (df_agg_OOT$median_res_10 - df_agg_OOT$median_res_9)
 anyNA(df_agg_OOT)
 
 
-test_preds = predict(experimental,newdata=df_agg_OOT)
-test_preds_probs = predict(experimental,newdata=df_agg_OOT,type='prob')
+test_preds = predict(logistic_selected,newdata=df_agg_OOT)
+test_preds_probs = predict(logistic_selected,newdata=df_agg_OOT,type='prob')
 newtable = cbind(df_agg_OOT,test_preds)
 
 names(newtable)[87] = 'test_preds'
