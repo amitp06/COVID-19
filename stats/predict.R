@@ -55,20 +55,20 @@ pivot_wider(id_cols=c("nation","state","county","location_combined","fips", "pop
 
 #should have named this something else, maybe, but renaming incorrectly just so predict function works easily.
 
-df_agg_OOT$case_diff_7_8 = df_agg$end_cases_9/df_agg$end_cases_8 - 1
-df_agg_OOT$case_diff_7_8[is.na(df_agg$case_diff_7_8)] = df_agg$end_cases_9[is.na(df_agg$case_diff_7_8)] - 1
+df_agg_OOT$case_diff_7_8 = df_agg_OOT$end_cases_9/df_agg_OOT$end_cases_8 - 1
+df_agg_OOT$case_diff_7_8[is.na(df_agg_OOT$case_diff_7_8)] = df_agg_OOT$end_cases_9[is.na(df_agg_OOT$case_diff_7_8)] - 1
 
 # Hardcoded county median as response variable cutoff but could be an arbitrary value
 cutoff = 0.3409769
-df_agg_OOT$high_growth_8 = factor(ifelse(df_agg$case_diff_7_8 > cutoff,'high_growth','low_growth'))
-df_agg_OOT$high_growth_8 = relevel(df_agg$high_growth_8,ref='low_growth')
+df_agg_OOT$high_growth_8 = factor(ifelse(df_agg_OOT$case_diff_7_8 > cutoff,'high_growth','low_growth'))
+df_agg_OOT$high_growth_8 = relevel(df_agg_OOT$high_growth_8,ref='low_growth')
 
-df_agg_OOT$retail_diff_7_8 = (df_agg$median_retail_9 - df_agg$median_retail_8)
-df_agg_OOT$grocery_diff_7_8 = (df_agg$median_grocery_9 - df_agg$median_grocery_8)
-df_agg_OOT$parks_diff_7_8 = (df_agg$median_parks_9 - df_agg$median_parks_8)
-df_agg_OOT$transit_diff_7_8 = (df_agg$median_transit_9 - df_agg$median_transit_8)
-df_agg_OOT$work_diff_7_8 = (df_agg$median_work_9 - df_agg$median_work_8)
-df_agg_OOT$res_diff_7_8 = (df_agg$median_res_9 - df_agg$median_res_8)
+df_agg_OOT$retail_diff_7_8 = (df_agg_OOT$median_retail_9 - df_agg_OOT$median_retail_8)
+df_agg_OOT$grocery_diff_7_8 = (df_agg_OOT$median_grocery_9 - df_agg_OOT$median_grocery_8)
+df_agg_OOT$parks_diff_7_8 = (df_agg_OOT$median_parks_9 - df_agg_OOT$median_parks_8)
+df_agg_OOT$transit_diff_7_8 = (df_agg_OOT$median_transit_9 - df_agg_OOT$median_transit_8)
+df_agg_OOT$work_diff_7_8 = (df_agg_OOT$median_work_9 - df_agg_OOT$median_work_8)
+df_agg_OOT$res_diff_7_8 = (df_agg_OOT$median_res_9 - df_agg_OOT$median_res_8)
 # df_agg$ind_retail = as.factor(df_agg$median_retail_8 > median(df_agg$median_retail_8))
 # df_agg$ind_grocery = as.factor(df_agg$median_grocery_8 > median(df_agg$median_grocery_8))
 # df_agg$ind_parks = as.factor(df_agg$median_parks_8 > median(df_agg$median_parks_8))
