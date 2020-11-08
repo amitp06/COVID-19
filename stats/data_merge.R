@@ -77,3 +77,11 @@ df_subset = subset(df_merged,
 names(df_subset) = c('nation','state','county','location_combined','fips','date','population','cases','deaths',
                      'mobility_retail_recreation_change','mobility_grocery_pharmacy_change','mobility_parks_change',
                      'mobility_transit_stations_change','mobility_workplaces_change','mobility_residential_change')
+
+
+df_subset_OOT = df_subset[df_subset['date'] > '2020-07-31',]
+
+df_subset = df_subset[df_subset['date'] <= '2020-08-31',]
+
+
+

@@ -57,6 +57,11 @@ df_agg = df_subset %>%
                             "median_transit", "mean_work", "median_work", "mean_res", "median_res")) %>%
   na.omit() # drops count from 2766 to 2689. something to look into?
 
+
+
+
+
+
 df_agg$case_diff_7_8 = df_agg$end_cases_8/df_agg$end_cases_7 - 1
 df_agg$case_diff_7_8[is.na(df_agg$case_diff_7_8)] = df_agg$end_cases_8[is.na(df_agg$case_diff_7_8)] - 1
 
@@ -141,6 +146,9 @@ roc_curve$auc
 # Get calibration stats
 calibration = calibration(experimental$pred$obs~experimental$pred$high_growth,cuts=5,class='high_growth')
 xyplot(calibration)
+
+
+
 
 # Save model candidate (only use when you want to keep a model for faster loading in a future script)
 # saveRDS(experimental,'logistic_selected.rds')
