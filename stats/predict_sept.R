@@ -1,4 +1,3 @@
-
 logistic_selected <- readRDS("E:/Grad School/Homework/656/COVID-19/stats/logistic_selected.rds")
 
 df_agg_OOT = df_subset_OOT %>%
@@ -64,7 +63,7 @@ df_agg_OOT$case_diff_7_8[is.na(df_agg_OOT$case_diff_7_8)] = df_agg_OOT$end_cases
 
 
 # Hardcoded county median as response variable cutoff but could be an arbitrary value
-cutoff = 0.19
+cutoff = 0.1902792 #median(df_agg_OOT$case_diff_7_8)
 df_agg_OOT$high_growth_8 = factor(ifelse(df_agg_OOT$case_diff_7_8 > cutoff,'high_growth','low_growth'))
 df_agg_OOT$high_growth_8 = relevel(df_agg_OOT$high_growth_8,ref='low_growth')
 

@@ -61,7 +61,7 @@ df_agg_OOT$case_diff_7_8 = df_agg_OOT$end_cases_10/df_agg_OOT$end_cases_9 - 1
 df_agg_OOT$case_diff_7_8[is.na(df_agg_OOT$case_diff_7_8)] = df_agg_OOT$end_cases_10[is.na(df_agg_OOT$case_diff_7_8)] - 1
 
 # Hardcoded county median as response variable cutoff but could be an arbitrary value
-cutoff = 0.2
+cutoff = 0.2304965 #median(df_agg_OOT$case_diff_7_8)
 df_agg_OOT$high_growth_8 = factor(ifelse(df_agg_OOT$case_diff_7_8 > cutoff,'high_growth','low_growth'))
 df_agg_OOT$high_growth_8 = relevel(df_agg_OOT$high_growth_8,ref='low_growth')
 
@@ -81,8 +81,9 @@ df_agg_OOT$res_diff_7_8 = (df_agg_OOT$median_res_10 - df_agg_OOT$median_res_9)
 anyNA(df_agg_OOT)
 
 
-test_preds = predict(logistic_selected,newdata=df_agg_OOT)
+#test_preds = predict(logistic_selected,newdata=df_agg_OOT)
 test_preds_probs = predict(logistic_selected,newdata=df_agg_OOT,type='prob')
+test_preds = as.factor(ifelse(test_preds_probs$high_growth > 0.5,'high_growth','low_growth'))
 newtable = cbind(df_agg_OOT,test_preds)
 
 names(newtable)[87] = 'test_preds'
