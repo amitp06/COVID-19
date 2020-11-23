@@ -11,34 +11,35 @@ gdp=log(qgdp[,3:5])
 zt=diffM(gdp)
 m1=VAR(zt,p=2)
 
-head(df_agg)
+
+df_agg2 = df_subset %>%
+  group_by(fips) %>%
+  arrange(fips,date) %>%
+  mutate(cases_inc = cases - lag(cases,default=first(cases))) %>%
+  mutate(deaths_inc = deaths - lag(deaths,default=first(deaths)))
+
+#spot check that grouping worked print(df_agg2[df_agg2$fips == '10001' | df_agg2$fips == '10003',][c('fips','cases_inc')],n=500)
 
 
-df_agg_zt = df_agg[c('fips','end_cases_2','end_cases_3','end_cases_4','end_cases_5','end_cases_6','end_cases_7','end_cases_8')]
+df_agg_zt = df_agg2[c('fips','date', 'cases_inc')]
 
-df_agg_zt['end_cases_3_2'] = df_agg_zt['end_cases_3'] - df_agg_zt['end_cases_2'] 
-df_agg_zt['end_cases_4_3'] = df_agg_zt['end_cases_4'] - df_agg_zt['end_cases_3'] 
-df_agg_zt['end_cases_5_4'] = df_agg_zt['end_cases_5'] - df_agg_zt['end_cases_4'] 
-df_agg_zt['end_cases_6_5'] = df_agg_zt['end_cases_6'] - df_agg_zt['end_cases_5'] 
-df_agg_zt['end_cases_7_6'] = df_agg_zt['end_cases_7'] - df_agg_zt['end_cases_6'] 
-df_agg_zt['end_cases_8_7'] = df_agg_zt['end_cases_8'] - df_agg_zt['end_cases_7'] 
+zt_df = df_agg_zt %>%
+  pivot_wider(id_cols=c("date"),
+              names_from=c("fips"),
+              values_from=c("cases_inc")) 
 
-df_agg_zt = df_agg_zt[-c(2:8)]
+# some dimensionality problems still, I think
 
-#pivot_longer(df_agg_zt,names_to='fips')
-#melt(df_agg_zt,id.vars='fips')
-
-df_agg_ztdf = as.data.frame(df_agg_zt)
-
-row.names(df_agg_ztdf) = df_agg_ztdf$fips
+zt_df_nonull = zt_df %>% 
+  select_if(~ !any(is.na(.)))
 
 
-df_agg_ztdf = df_agg_ztdf[-1]
-df_agg_ztmat = as.matrix(df_agg_ztdf)
-zt = t(df_agg_ztmat)
+# A simpler case failed before, I think due to dimensionality, so this might too. Maybe need to agg to at least state level?
 
-
+zt = zt_df[-1]
+zt_nonull = zt_df_nonull[-1]
 
 vtest = VARX(zt,1)
 
+vtest2 = VARX(zt_nonull,1)
 
