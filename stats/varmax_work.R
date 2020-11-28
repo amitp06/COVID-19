@@ -85,7 +85,7 @@ zt_filt_nocorr = zt_filt[,-remove_filt]
 
 
 varmatest = VARMA(zt_filt_nocorr)
-#vtest = VARX(zt_filt_nocorr,p=1)
+vtest = VARX(zt_filt_nocorr,p=1,xt=runif(199))
 
 #vtest2 = VARX(zt_nonull,1)
 
