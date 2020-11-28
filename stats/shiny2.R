@@ -29,8 +29,8 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   output$Category <- renderPlot({
-    plot(data.frame(df_agg2[,choicelookup[choicelookup$choices==input$Category,]$V2],df_agg2[,"case_diff_7_8"]),
-         xlab="Mean July Mobility Change for Selected Category", ylab = "Percentage Case Count Change from July to August")
+    plot(data.frame(df_agg2[,choicelookup[choicelookup$choices==input$Category,]$V2],df_agg2[,"case_diff_7_8"]*100),
+         xlab="Mobility Change for Selected Category (July 2020 Mean)", ylab = "Percent Change in Cases (July-August 2020)",main='COVID Case Growth by Mobility Category')
   })
 
 }
