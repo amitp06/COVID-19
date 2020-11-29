@@ -1,0 +1,12 @@
+name: COVID_Mobility
+title: COVID_Mobility
+username:
+account: amitp06
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3317226
+bundleId: 3917462
+url: https://amitp06.shinyapps.io/COVID_Mobility/
+when: 1606609968.60022
+asMultiple: FALSE
+asStatic: FALSE
